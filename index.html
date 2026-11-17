@@ -66,7 +66,8 @@ label.f input,label.f textarea{display:block;width:100%;margin-top:4px;font:inhe
 label.f textarea{min-height:76px;resize:vertical}
 nav{position:fixed;left:0;right:0;bottom:0;background:#0d1a27;border-top:1px solid var(--line);
   padding:6px 6px calc(6px + env(safe-area-inset-bottom));display:flex;justify-content:center;gap:2px;z-index:5}
-nav button{flex:1 1 0;max-width:140px;background:none;color:var(--muted);font-size:13px;font-weight:600;padding:8px 2px;border-radius:10px}
+nav button{flex:1 1 0;min-width:0;max-width:140px;background:none;color:var(--muted);font-size:11.5px;font-weight:600;padding:8px 0;border-radius:10px;white-space:nowrap}
+@media (min-width:430px){ nav button{font-size:13px} }
 nav button i{display:block;font-style:normal;font-size:21px;line-height:1.2}
 nav button.on{color:var(--amber);background:var(--panel2)}
 #sign{position:fixed;inset:0;z-index:20;display:none;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:20px}
@@ -220,7 +221,7 @@ footer{max-width:720px;margin:10px auto 0;padding:0 16px 16px;color:var(--muted)
 
   <div class="card">
     <h3>Our street radio plan</h3>
-    <p>Phones can't reach each other without towers. A pair of basic walkie-talkies (sold as FRS radios, no license needed) reaches roughly half a mile between houses. They only work if the whole street uses the same channel at the same times.</p>
+    <p>Without towers, phones can only reach each other by satellite text, which is slow and outdoors only (see the Satellite tab). A pair of basic walkie-talkies (sold as FRS radios, no license needed) reaches roughly half a mile between houses. They only work if the whole street uses the same channel at the same times.</p>
     <label class="f">Channel<input data-save="ch" inputmode="numeric" placeholder="3"></label>
     <label class="f">Privacy code (set to 0 or off so every brand can hear every other)<input data-save="code" placeholder="0 / off"></label>
     <label class="f">Check-in times<input data-save="times" placeholder="9 AM, noon, 3 PM, 6 PM, 9 PM. Listen for 5 minutes."></label>
@@ -352,18 +353,99 @@ footer{max-width:720px;margin:10px auto 0;padding:0 16px 16px;color:var(--muted)
   <div class="card">
     <h3>About this guide</h3>
     <p>Made by a Newport Beach neighbor. It is <b>not</b> an official City of Newport Beach publication. In an emergency, instructions from police, fire and the radio always come first.</p>
-    <p class="muted">Local facts come from the city's "Ready Newport Beach" Emergency Preparedness Guide and the city's emergency notification, fire station and power outage pages, checked November 16, 2026. The walkie-talkie plan, the power bank and the phone tips are additions by the author. Addresses and numbers can change; the city's own site is newportbeachca.gov/readynb.</p>
+    <p class="muted">Local facts come from the city's "Ready Newport Beach" Emergency Preparedness Guide and the city's emergency notification, fire station and power outage pages, checked November 16, 2026. The satellite steps come from Apple's support pages, checked November 17, 2026. The walkie-talkie plan, the satellite check-in, the power bank and the phone tips are additions by the author. Addresses and numbers can change; the city's own site is newportbeachca.gov/readynb.</p>
+  </div>
+</section>
+
+<!-- ================= SATELLITE ================= -->
+<section id="t-sat">
+  <h2>Text by satellite</h2>
+
+  <div class="card">
+    <p>An iPhone 14 or later can send texts through a satellite when there is no cell signal and no Wi-Fi. It needs no tower, no app and no extra equipment. It only switches on when the phone has no signal at all.</p>
+    <p class="muted">Free for two years after the iPhone was first activated, per Apple. Works in the United States with iOS 18 or later.</p>
+  </div>
+
+  <div class="card alert">
+    <h3>Emergency: reach 911</h3>
+    <ul class="plain">
+      <li>Go outside, with open sky above you.</li>
+      <li>Call 911. The call may connect even with no bars.</li>
+      <li>If it won't connect, tap <b>Emergency Text via Satellite</b>.</li>
+      <li>Tap <b>Report Emergency</b> and answer the questions by tapping.</li>
+      <li>Point the phone where the screen tells you and hold it there until the message sends.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Text family or a neighbor</h3>
+    <ul class="plain">
+      <li>Go outside with a clear view of the sky. Trees and buildings block it.</li>
+      <li>Open <b>Messages</b>. With no signal, it offers to connect to a satellite. Follow the arrows on screen.</li>
+      <li>Type a short message and send. Expect 30 seconds to a few minutes.</li>
+      <li>Keep the phone pointed at the satellite until it says Delivered.</li>
+    </ul>
+    <p class="muted">If Messages doesn't offer it: swipe down from the top right corner, tap the Cellular button, then Satellite.</p>
+  </div>
+
+  <div class="card">
+    <h3>What it can't do</h3>
+    <ul class="plain">
+      <li>No calls, photos, voice messages or group chats. Plain text to one person at a time.</li>
+      <li>It does not work indoors, in a car or under heavy trees.</li>
+      <li>A neighbor who is also without signal only receives your text when they go outside and connect too. So agree on check-in times.</li>
+      <li>If your phone shows bars but nothing goes through, satellite will not switch on. Use the radio plan.</li>
+      <li>Nobody knows how well it holds up when a whole city uses it at once. Treat it as one tool, not the plan.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Our satellite check-in</h3>
+    <p>Use the same times as the street radio plan on the Neighbors tab. At each time, step outside, connect and send one line.</p>
+    <label class="f">Who I text first (name and number)<input data-save="satwho" placeholder=""></label>
+    <label class="f">What we send<input data-save="satmsg" placeholder="OK at 12 Seashore. Need nothing. Next check 3 PM."></label>
+    <p class="muted">Say who, where, what you need and when you'll check again. Saved on this phone only.</p>
+  </div>
+
+  <div class="card">
+    <h3>Practice now, while phones work</h3>
+    <ul class="check">
+      <li><label><input type="checkbox"><span>Update the iPhone: Settings, General, Software Update</span></label></li>
+      <li><label><input type="checkbox"><span>Check iMessage is on: Settings, Apps, Messages</span></label></li>
+      <li><label><input type="checkbox"><span>Run the practice: Settings, Apps, Messages, Satellite Connection Demo. Do it outside. It sends nothing.</span></label></li>
+      <li><label><input type="checkbox"><span>Add emergency contacts in the Health app under Medical ID. They can reach you by satellite first.</span></label></li>
+      <li><label><input type="checkbox"><span>Save your neighbors' mobile numbers in Contacts</span></label></li>
+      <li><label><input type="checkbox"><span>Show one neighbor how to run the practice on their phone</span></label></li>
+      <li><label><input type="checkbox"><span>Keep a charged power bank. Satellite texting is useless on a dead phone.</span></label></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Other phones</h3>
+    <p>Older iPhones and most Android phones have no built-in satellite texting. Some newer Android phones do, and some carriers sell a satellite add-on that works on ordinary phones. T-Mobile's is called T-Satellite and is sold to customers of other carriers too.</p>
+    <p class="muted">Plans, prices and supported phones change often. Ask your carrier before you count on it.</p>
+  </div>
+
+  <div class="card">
+    <h3>For a whole street</h3>
+    <ul class="plain">
+      <li><b>A satellite internet dish on a battery.</b> A portable dish such as Starlink Mini makes a Wi-Fi spot with real internet. Every phone near it can text and call as usual. It needs a monthly plan and a charged battery or solar panel.</li>
+      <li><b>Mesh text radios.</b> Small radios (Meshtastic is the common kind, about $30 to $40) pair with a phone and pass texts house to house with no towers. Everyone has to set theirs up before an outage.</li>
+      <li><b>Walkie-talkies.</b> Still the simplest voice link. See the Neighbors tab.</li>
+    </ul>
+    <p class="muted">One home with a dish and a battery can be the street's message point. Put its address in your street radio plan.</p>
   </div>
 </section>
 
 </main>
 
-<footer>Unofficial neighbor-made guide · Facts checked Nov 16, 2026</footer>
+<footer>Unofficial neighbor-made guide · Facts checked Nov 17, 2026</footer>
 
 <nav>
   <button data-tab="now" class="on"><i>⚡</i>Now</button>
   <button data-tab="news"><i>📻</i>News</button>
   <button data-tab="neighbors"><i>🏘️</i>Neighbors</button>
+  <button data-tab="sat"><i>🛰️</i>Satellite</button>
   <button data-tab="places"><i>📍</i>Places</button>
   <button data-tab="plan"><i>📝</i>Plan</button>
 </nav>
@@ -410,6 +492,7 @@ footer{max-width:720px;margin:10px auto 0;padding:0 16px 16px;color:var(--muted)
         <li>Edison outage line: 1-800-611-1911</li>
         <li>City: 949-644-3309 · CERT: 949-644-3112</li>
         <li>Hoag Hospital: 1 Hoag Drive</li>
+        <li>No signal, iPhone 14 or later: go outside, open Messages, follow the satellite prompt. Text only. Check in at our radio times.</li>
       </ul>
       <h2>Our street radio plan</h2>
       <p>Channel: <span class="fill" data-show="ch"></span></p>
