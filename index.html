@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Newport Beach Blackout Guide</title>
+<meta name="description" content="A neighbor-made guide for Newport Beach that works with no power, no Wi-Fi and no cell signal.">
+<meta name="theme-color" content="#0b1622">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Blackout Guide">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-180.png">
+<style>
+:root{
+  --bg:#0b1622; --panel:#13212f; --panel2:#1a2c3d; --line:#2a3f54;
+  --text:#eef3f7; --muted:#9db0c2; --amber:#ffb53d; --red:#ff5a4d; --green:#3ecf8e;
+  --radius:14px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);
+  font:17px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  padding:env(safe-area-inset-top) 0 calc(76px + env(safe-area-inset-bottom)) 0}
+header{padding:20px 16px 8px;max-width:720px;margin:0 auto}
+header h1{font-size:26px;line-height:1.15;margin:0 0 4px;letter-spacing:-.01em}
+header p{margin:0;color:var(--muted);font-size:15px}
+#status{display:inline-block;margin-top:10px;padding:4px 10px;border-radius:99px;font-size:13px;
+  background:var(--panel2);color:var(--muted);border:1px solid var(--line)}
+#status.ok{color:var(--green);border-color:#1f6b4c}
+main{max-width:720px;margin:0 auto;padding:0 16px}
+section{display:none}
+section.on{display:block}
+h2{font-size:21px;margin:22px 0 10px}
+h3{font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--amber);margin:0 0 8px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px 14px 6px;margin:0 0 14px}
+.card p{margin:0 0 10px}
+.card.alert{border-color:#7a2d27;background:#231a1c}
+.card.alert h3{color:var(--red)}
+ul.check{list-style:none;margin:0;padding:0}
+ul.check li{border-top:1px solid var(--line)}
+ul.check li:first-child{border-top:0}
+ul.check label{display:flex;gap:12px;padding:11px 0;align-items:flex-start;cursor:pointer}
+ul.check input{flex:0 0 24px;width:24px;height:24px;margin:1px 0 0;accent-color:var(--amber)}
+ul.check input:checked + span{color:var(--muted);text-decoration:line-through}
+ul.plain{margin:0 0 10px;padding-left:20px}
+ul.plain li{margin:0 0 6px}
+.big{font-size:34px;font-weight:700;line-height:1.1;color:var(--amber);margin:0 0 4px}
+.muted{color:var(--muted);font-size:15px}
+a{color:var(--amber)}
+.rows{margin:0 0 8px}
+.row{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-top:1px solid var(--line);align-items:baseline}
+.row:first-child{border-top:0}
+.row b{font-weight:600}
+.row a,.row span.v{white-space:nowrap;font-weight:600;text-align:right}
+.row small{display:block;color:var(--muted);font-weight:400;font-size:14px}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 12px}
+button{font:inherit;font-weight:700;border:0;border-radius:12px;padding:16px 10px;color:#0b1622;background:var(--amber);cursor:pointer}
+button.help{background:var(--red);color:#fff}
+button.ok{background:var(--green)}
+button.ghost{background:var(--panel2);color:var(--text);border:1px solid var(--line);font-weight:600}
+label.f{display:block;margin:0 0 12px;font-size:14px;color:var(--muted)}
+label.f input,label.f textarea{display:block;width:100%;margin-top:4px;font:inherit;font-size:17px;color:var(--text);
+  background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:11px 12px}
+label.f textarea{min-height:76px;resize:vertical}
+nav{position:fixed;left:0;right:0;bottom:0;background:#0d1a27;border-top:1px solid var(--line);
+  padding:6px 6px calc(6px + env(safe-area-inset-bottom));display:flex;justify-content:center;gap:2px;z-index:5}
+nav button{flex:1 1 0;max-width:140px;background:none;color:var(--muted);font-size:13px;font-weight:600;padding:8px 2px;border-radius:10px}
+nav button i{display:block;font-style:normal;font-size:21px;line-height:1.2}
+nav button.on{color:var(--amber);background:var(--panel2)}
+#sign{position:fixed;inset:0;z-index:20;display:none;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:20px}
+#sign.on{display:flex}
+#sign b{font-size:30vw;line-height:1;font-weight:800;letter-spacing:-.02em}
+#sign p{font-size:18px;margin:16px 0 0;opacity:.85}
+#sign.help{background:#d92b1e;color:#fff}
+#sign.ok{background:#17a765;color:#fff}
+footer{max-width:720px;margin:10px auto 0;padding:0 16px 16px;color:var(--muted);font-size:13px}
+#printcard{display:none}
+@media (min-width:600px){ .btns{grid-template-columns:1fr 1fr 1fr 1fr} }
+
+@media print{
+  body{background:#fff;color:#000;padding:0;font-size:11pt;line-height:1.35}
+  header,main,nav,footer,#sign{display:none !important}
+  #printcard{display:block;padding:0}
+  #printcard h1{font-size:20pt;margin:0 0 2pt}
+  #printcard h2{font-size:11pt;margin:9pt 0 3pt;text-transform:uppercase;letter-spacing:.06em;border-bottom:1.5pt solid #000;padding-bottom:1pt}
+  #printcard p,#printcard li{margin:0 0 2.5pt}
+  #printcard ul{margin:0;padding-left:14pt}
+  #printcard .two{display:grid;grid-template-columns:1fr 1fr;gap:0 18pt}
+  #printcard .fill{border-bottom:.75pt solid #000;display:inline-block;min-width:150pt;min-height:12pt}
+  #printcard .signs{display:grid;grid-template-columns:1fr 1fr;gap:10pt;margin-top:8pt}
+  #printcard .signs div{border:2.5pt solid #000;text-align:center;font-size:54pt;font-weight:800;padding:14pt 0}
+  #printcard small{font-size:8pt}
+  @page{margin:.5in}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Newport Beach Blackout Guide</h1>
+  <p>What to do when the power, Wi-Fi and phones are down.</p>
+  <span id="status">Checking offline copy…</span>
+</header>
+
+<main>
+
+<!-- ================= NOW ================= -->
+<section id="t-now" class="on">
+  <div class="card alert">
+    <h3>Right now</h3>
+    <ul class="check">
+      <li><label><input type="checkbox"><span><b>Someone's life is in danger:</b> call or text 911. No signal on an iPhone 14 or later? Dial 911 anyway, then follow the prompt for Emergency SOS via satellite. Stand outside with open sky.</span></label></li>
+      <li><label><input type="checkbox"><span><b>Felt strong shaking near the water?</b> Do not wait for a siren. Walk inland and uphill now.</span></label></li>
+      <li><label><input type="checkbox"><span><b>Smell or hear gas?</b> Get everyone out. Do not touch light switches. Shut the valve at the meter with a wrench only if you smell or hear a leak.</span></label></li>
+      <li><label><input type="checkbox"><span><b>Power line on the ground?</b> Stay far back, keep kids and pets away, and report it to 911.</span></label></li>
+      <li><label><input type="checkbox"><span><b>Light:</b> flashlights only. No candles.</span></label></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>First hour</h3>
+    <ul class="check">
+      <li><label><input type="checkbox"><span>Tune a radio to <b>107.9 FM</b>. A car radio works.</span></label></li>
+      <li><label><input type="checkbox"><span>Put your <b>HELP</b> or <b>OK</b> sign where it can be seen from the street. (Neighbors tab.)</span></label></li>
+      <li><label><input type="checkbox"><span>Keep the fridge and freezer shut. A closed fridge stays cold about 4 hours.</span></label></li>
+      <li><label><input type="checkbox"><span>Unplug appliances and electronics so a surge can't damage them when power returns.</span></label></li>
+      <li><label><input type="checkbox"><span>Save your phone: Low Power Mode on, brightness down, text instead of calling.</span></label></li>
+      <li><label><input type="checkbox"><span>If it's safe, knock on the doors nearest you. Start with older neighbors, anyone with a disability, and families with babies.</span></label></li>
+      <li><label><input type="checkbox"><span>Charging from the car? Never run it in the garage or close to the house.</span></label></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>First day</h3>
+    <ul class="check">
+      <li><label><input type="checkbox"><span>Turn on your walkie-talkie at the times your street agreed. (Neighbors tab.)</span></label></li>
+      <li><label><input type="checkbox"><span>Water: plan on 1 gallon per person, per day. Pets too.</span></label></li>
+      <li><label><input type="checkbox"><span>Stay off the roads unless it's an emergency. A dark traffic signal is a four-way stop.</span></label></li>
+      <li><label><input type="checkbox"><span>Throw out food that has been above 40°F for 2 hours or more.</span></label></li>
+      <li><label><input type="checkbox"><span>Do not call 911 for information. Use 311, or wait for the radio.</span></label></li>
+      <li><label><input type="checkbox"><span>Leave a note on your door if you leave, saying where you went.</span></label></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Three days or more</h3>
+    <ul class="check">
+      <li><label><input type="checkbox"><span><b>More water:</b> your water heater tank holds drinkable water. Let it cool, shut the cold supply, open the drain valve at the bottom.</span></label></li>
+      <li><label><input type="checkbox"><span><b>Unsure water is clean?</b> Strain it through a coffee filter or cloth, add 8 drops of plain unscented bleach per gallon, stir, wait 30 minutes.</span></label></li>
+      <li><label><input type="checkbox"><span>Never drink pool, spa or toilet tank water. Use it for flushing and washing only.</span></label></li>
+      <li><label><input type="checkbox"><span>Generators stay outside, away from windows.</span></label></li>
+      <li><label><input type="checkbox"><span>Never heat the house with the oven.</span></label></li>
+      <li><label><input type="checkbox"><span>Check your OK neighbors again. Things change after day two.</span></label></li>
+    </ul>
+  </div>
+  <p class="muted"><button class="ghost" id="reset" style="padding:10px 14px;font-size:14px">Clear all checkmarks</button></p>
+</section>
+
+<!-- ================= NEWS ================= -->
+<section id="t-news">
+  <h2>Where to get real information</h2>
+  <div class="card">
+    <h3>Radio</h3>
+    <p class="big">107.9 FM</p>
+    <p>KWVE, "K-Wave". This is the Orange County emergency alert station the city tells residents to tune to. Any battery, crank or car radio will pick it up.</p>
+    <p class="muted">If you have TV power, the city also names Channel 3.</p>
+  </div>
+
+  <div class="card">
+    <h3>Sirens</h3>
+    <p>Newport Beach has three outdoor sirens. They can sound for <b>any</b> emergency, not just a tsunami. If you hear one, tune to 107.9 FM and wait for instructions.</p>
+    <ul class="plain">
+      <li>West Jetty View Park, at the Wedge</li>
+      <li>Marina Park, on Balboa Boulevard</li>
+      <li>West Newport Park, near 60th Street and Seashore Drive</li>
+    </ul>
+    <p class="muted">They are tested at noon on the first Friday of every month. A siren at that time is only a test.</p>
+  </div>
+
+  <div class="card">
+    <h3>Numbers, if a phone works</h3>
+    <div class="rows">
+      <div class="row"><b>Life-threatening emergency<small>Call or text</small></b><a href="tel:911">911</a></div>
+      <div class="row"><b>Information, not an emergency</b><a href="tel:311">311</a></div>
+      <div class="row"><b>Report a power outage<small>Southern California Edison</small></b><a href="tel:18006111911">1-800-611-1911</a></div>
+      <div class="row"><b>Edison customer service</b><a href="tel:18006554555">1-800-655-4555</a></div>
+      <div class="row"><b>City of Newport Beach</b><a href="tel:9496443309">949-644-3309</a></div>
+      <div class="row"><b>City emergency alerts office</b><a href="tel:9496443670">949-644-3670</a></div>
+      <div class="row"><b>Newport Beach CERT<small>Fire Department neighbor volunteers</small></b><a href="tel:9496443112">949-644-3112</a></div>
+    </div>
+    <p class="muted">Cell towers usually run a few hours on backup power. In that window a text gets through when a call won't.</p>
+  </div>
+
+  <div class="card">
+    <h3>Do this before anything happens</h3>
+    <ul class="check">
+      <li><label><input type="checkbox"><span>Sign up for <b>AlertOC</b> at alertoc.com. It is the county's emergency call and text system.</span></label></li>
+      <li><label><input type="checkbox"><span>Sign up for <b>Nixle</b> at local.nixle.com/register for city alerts.</span></label></li>
+      <li><label><input type="checkbox"><span>Own one radio that runs on batteries, a crank or solar.</span></label></li>
+      <li><label><input type="checkbox"><span>iPhone 14 or later: open Settings, Emergency SOS, and run the satellite demo once so you know how it feels.</span></label></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= NEIGHBORS ================= -->
+<section id="t-neighbors">
+  <h2>Reach your neighbors</h2>
+
+  <div class="card">
+    <h3>Door sign</h3>
+    <p>The city's method: every home shows <b>HELP</b> or <b>OK</b> in a front window or on the door. Tap one to turn this phone into the sign, or print the paper version from the Plan tab.</p>
+    <div class="btns">
+      <button class="help" data-sign="help">Show HELP</button>
+      <button class="ok" data-sign="ok">Show OK</button>
+    </div>
+    <p class="muted">Walking the street? Go first to homes showing HELP and homes showing nothing. Check the OK homes later.</p>
+  </div>
+
+  <div class="card">
+    <h3>Our street radio plan</h3>
+    <p>Phones can't reach each other without towers. A pair of basic walkie-talkies (sold as FRS radios, no license needed) reaches roughly half a mile between houses. They only work if the whole street uses the same channel at the same times.</p>
+    <label class="f">Channel<input data-save="ch" inputmode="numeric" placeholder="3"></label>
+    <label class="f">Privacy code (set to 0 or off so every brand can hear every other)<input data-save="code" placeholder="0 / off"></label>
+    <label class="f">Check-in times<input data-save="times" placeholder="9 AM, noon, 3 PM, 6 PM, 9 PM. Listen for 5 minutes."></label>
+    <label class="f">Street contact (name and house number)<input data-save="captain" placeholder=""></label>
+    <p class="muted">The channel and times shown in grey are a suggested starting point, not an official city plan. Agree on yours with your neighbors and type them in. They are saved on this phone only.</p>
+  </div>
+
+  <div class="card">
+    <h3>How to talk on the radio</h3>
+    <ul class="plain">
+      <li>Hold the button, wait one second, then speak. Let go to listen.</li>
+      <li>Say who you are and where: "This is Emilia at number 12."</li>
+      <li>Keep it short. Say "over" when you finish.</li>
+      <li>Someone hurt goes first. Everyone else waits.</li>
+      <li>Turn the radio off between check-in times to save batteries.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Neighbors to check on first</h3>
+    <label class="f">Names, house numbers, what they need<textarea data-save="vulnerable" placeholder="Example: Mr. Lee, #14, uses oxygen. The Parkers, #9, new baby."></textarea></label>
+    <p class="muted">Saved on this phone only. Nothing is sent anywhere.</p>
+  </div>
+
+  <div class="card">
+    <h3>Want to do more?</h3>
+    <p>The Fire Department's CERT program trains residents for exactly this: 25 hours, free, age 16 and up. Visit nbcert.org or call 949-644-3112.</p>
+  </div>
+</section>
+
+<!-- ================= PLACES ================= -->
+<section id="t-places">
+  <h2>Where to go</h2>
+
+  <div class="card alert">
+    <h3>Tsunami: low ground near the water</h3>
+    <p>West Newport, the Balboa Peninsula, Balboa Island, Lido Isle and the harbor edges are in the city's possible tsunami flood area.</p>
+    <ul class="plain">
+      <li>After strong shaking, or when told to leave, go inland and uphill. Follow the blue tsunami evacuation signs.</li>
+      <li>Go on foot if traffic is stopped.</li>
+      <li>Stay on high ground. Waves can keep arriving for 8 hours or longer.</li>
+      <li>Go back only when officials say it is safe.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Hospital</h3>
+    <div class="rows">
+      <div class="row"><b>Hoag Hospital Newport Beach</b><span class="v">1 Hoag Drive</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Fire stations</h3>
+    <p class="muted">If you can't reach 911 any other way, a fire station is a place to ask for help in person. Crews may be out on calls.</p>
+    <div class="rows">
+      <div class="row"><b>1 · Balboa Peninsula<small>Listed by the city as in a temporary station at the Palm Street lot by Balboa Pier</small></b><span class="v">110 E. Balboa Blvd</span></div>
+      <div class="row"><b>2 · Lido<small>Paramedics</small></b><span class="v">2807 Newport Blvd</span></div>
+      <div class="row"><b>3 · Fashion Island<small>Paramedics</small></b><span class="v">868 Santa Barbara Dr</span></div>
+      <div class="row"><b>4 · Balboa Island</b><span class="v">124 Marine Ave</span></div>
+      <div class="row"><b>5 · Corona del Mar<small>Paramedics</small></b><span class="v">410 Marigold Ave</span></div>
+      <div class="row"><b>6 · Mariners</b><span class="v">1348 Irvine Ave</span></div>
+      <div class="row"><b>7 · Santa Ana Heights<small>Paramedics</small></b><span class="v">20401 Acacia St</span></div>
+      <div class="row"><b>8 · Newport Coast</b><span class="v">6502 Ridge Park Rd</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Shelters</h3>
+    <p>Shelter locations are announced when they open. Listen to 107.9 FM. Until you hear one named, home is usually the safest place unless you've been told to leave.</p>
+    <p><b>Told to leave?</b> An <b>Immediate Evacuation Order</b> means go now. A <b>Potential Evacuation Order</b> means get ready, and leave early if anyone in your home needs extra time.</p>
+  </div>
+
+  <div class="card">
+    <h3>Tagged buildings after an earthquake</h3>
+    <div class="rows">
+      <div class="row"><b style="color:var(--red)">Red · Unsafe</b><span class="v">Do not enter</span></div>
+      <div class="row"><b style="color:var(--amber)">Yellow · Restricted use</b><span class="v">Limited entry only</span></div>
+      <div class="row"><b style="color:var(--green)">Green · Inspected</b><span class="v">OK to enter</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PLAN ================= -->
+<section id="t-plan">
+  <h2>My plan</h2>
+
+  <div class="card">
+    <h3>Keep this guide on your phone</h3>
+    <ul class="plain">
+      <li><b>iPhone:</b> open this page in Safari, tap Share, then "Add to Home Screen".</li>
+      <li><b>Android:</b> open the browser menu, then "Add to Home screen" or "Install app".</li>
+      <li>Open it once from the new icon while you still have internet. After that it opens with no signal at all.</li>
+    </ul>
+    <div class="btns" style="grid-template-columns:1fr"><button class="ghost" id="print">Print the one-page paper copy</button></div>
+  </div>
+
+  <div class="card">
+    <h3>Household card</h3>
+    <label class="f">Who lives here<textarea data-save="who" placeholder="Names and ages"></textarea></label>
+    <label class="f">Medical needs and medications<textarea data-save="med" placeholder=""></textarea></label>
+    <label class="f">Where we meet, close to home<input data-save="meet1" placeholder="Example: the mailbox on the corner"></label>
+    <label class="f">Where we meet if we can't get home<input data-save="meet2" placeholder=""></label>
+    <label class="f">Out-of-state contact (name and number)<input data-save="contact" placeholder=""></label>
+    <label class="f">Gas shutoff, water shutoff, breaker panel are located<textarea data-save="utils" placeholder=""></textarea></label>
+    <p class="muted">Saved on this phone only. Write the important parts on the paper copy too.</p>
+  </div>
+
+  <div class="card">
+    <h3>Kit, from the city's list</h3>
+    <ul class="check">
+      <li><label><input type="checkbox"><span>Water: 1 gallon per person per day, 3 days minimum</span></label></li>
+      <li><label><input type="checkbox"><span>Food that needs no cooking, 3 days minimum, and a hand can opener</span></label></li>
+      <li><label><input type="checkbox"><span>LED flashlights and spare batteries</span></label></li>
+      <li><label><input type="checkbox"><span>Radio that runs on batteries, a crank or solar</span></label></li>
+      <li><label><input type="checkbox"><span>First-aid kit</span></label></li>
+      <li><label><input type="checkbox"><span>One week of prescription medications</span></label></li>
+      <li><label><input type="checkbox"><span>Cash in small bills</span></label></li>
+      <li><label><input type="checkbox"><span>Copies of IDs, insurance and medical cards</span></label></li>
+      <li><label><input type="checkbox"><span>Toiletries, trash bags, a change of clothes</span></label></li>
+      <li><label><input type="checkbox"><span>Sturdy shoes, gloves and a flashlight under each bed</span></label></li>
+      <li><label><input type="checkbox"><span>Pet food, water, leash, carrier</span></label></li>
+      <li><label><input type="checkbox"><span>Power bank for phones, kept charged</span></label></li>
+      <li><label><input type="checkbox"><span>A pair of walkie-talkies and spare batteries</span></label></li>
+      <li><label><input type="checkbox"><span>A wrench kept by the gas meter</span></label></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>About this guide</h3>
+    <p>Made by a Newport Beach neighbor. It is <b>not</b> an official City of Newport Beach publication. In an emergency, instructions from police, fire and the radio always come first.</p>
+    <p class="muted">Local facts come from the city's "Ready Newport Beach" Emergency Preparedness Guide and the city's emergency notification, fire station and power outage pages, checked November 16, 2026. The walkie-talkie plan, the power bank and the phone tips are additions by the author. Addresses and numbers can change; the city's own site is newportbeachca.gov/readynb.</p>
+  </div>
+</section>
+
+</main>
+
+<footer>Unofficial neighbor-made guide · Facts checked Nov 16, 2026</footer>
+
+<nav>
+  <button data-tab="now" class="on"><i>⚡</i>Now</button>
+  <button data-tab="news"><i>📻</i>News</button>
+  <button data-tab="neighbors"><i>🏘️</i>Neighbors</button>
+  <button data-tab="places"><i>📍</i>Places</button>
+  <button data-tab="plan"><i>📝</i>Plan</button>
+</nav>
+
+<div id="sign"><b></b><p>Tap anywhere to close. Turn brightness up and prop the phone in a front window.</p></div>
+
+<!-- ================= PRINT ================= -->
+<div id="printcard">
+  <h1>Newport Beach Blackout Guide</h1>
+  <p>When the power, Wi-Fi and phones are down. Keep this on the fridge.</p>
+  <div class="two">
+    <div>
+      <h2>Right now</h2>
+      <ul>
+        <li>Life in danger: call or text 911. iPhone 14 or later with no signal: dial 911 and follow the satellite prompt, outside under open sky.</li>
+        <li>Strong shaking near the water: go inland and uphill. Don't wait for a siren.</li>
+        <li>Smell gas: get out, touch no switches, shut the meter valve with a wrench.</li>
+        <li>Downed power line: stay back, report to 911.</li>
+        <li>Flashlights only. No candles.</li>
+      </ul>
+      <h2>First hour</h2>
+      <ul>
+        <li>Radio to 107.9 FM (a car radio works).</li>
+        <li>Put HELP or OK in a front window.</li>
+        <li>Keep the fridge shut: cold about 4 hours.</li>
+        <li>Unplug electronics. Phone on Low Power Mode. Text, don't call.</li>
+        <li>Check on the neighbors nearest you.</li>
+      </ul>
+      <h2>After that</h2>
+      <ul>
+        <li>Water: 1 gallon per person per day. The water heater tank is drinkable.</li>
+        <li>Unsure water: 8 drops plain unscented bleach per gallon, wait 30 minutes.</li>
+        <li>Dark traffic signal = four-way stop. Stay off the roads.</li>
+        <li>Food above 40°F for 2 hours: throw it out.</li>
+        <li>Generators outside only. Never run a car in the garage.</li>
+      </ul>
+    </div>
+    <div>
+      <h2>Information</h2>
+      <ul>
+        <li><b>107.9 FM</b> (KWVE), the county emergency station</li>
+        <li>Sirens mean any emergency: tune to 107.9 FM. Test: first Friday, noon.</li>
+        <li>Emergency: 911 · Information: 311</li>
+        <li>Edison outage line: 1-800-611-1911</li>
+        <li>City: 949-644-3309 · CERT: 949-644-3112</li>
+        <li>Hoag Hospital: 1 Hoag Drive</li>
+      </ul>
+      <h2>Our street radio plan</h2>
+      <p>Channel: <span class="fill" data-show="ch"></span></p>
+      <p>Code: <span class="fill" data-show="code"></span></p>
+      <p>Times: <span class="fill" data-show="times"></span></p>
+      <p>Contact: <span class="fill" data-show="captain"></span></p>
+      <h2>Our household</h2>
+      <p>Meet near home: <span class="fill" data-show="meet1"></span></p>
+      <p>Meet away: <span class="fill" data-show="meet2"></span></p>
+      <p>Out-of-state contact: <span class="fill" data-show="contact"></span></p>
+      <p>Medical: <span class="fill" data-show="med"></span></p>
+      <p>Shutoffs: <span class="fill" data-show="utils"></span></p>
+    </div>
+  </div>
+  <div class="signs"><div>HELP</div><div>OK</div></div>
+  <p><small>Cut out the signs. Show one in a front window. Unofficial neighbor-made guide, not a City of Newport Beach publication. Local facts from the city's Ready Newport Beach guide and web pages, checked November 16, 2026. Official instructions always come first.</small></p>
+</div>
+
+<script>
+(function(){
+  var store = {
+    get:function(k){ try{ return localStorage.getItem('nbg:'+k) }catch(e){ return null } },
+    set:function(k,v){ try{ localStorage.setItem('nbg:'+k,v) }catch(e){} },
+    del:function(k){ try{ localStorage.removeItem('nbg:'+k) }catch(e){} }
+  };
+  function all(s,root){ return Array.prototype.slice.call((root||document).querySelectorAll(s)) }
+
+  // tabs
+  function show(tab){
+    all('section').forEach(function(s){ s.classList.toggle('on', s.id==='t-'+tab) });
+    all('nav button').forEach(function(b){ b.classList.toggle('on', b.dataset.tab===tab) });
+    window.scrollTo(0,0); store.set('tab',tab);
+  }
+  all('nav button').forEach(function(b){ b.addEventListener('click',function(){ show(b.dataset.tab) }) });
+  var last = store.get('tab'); if(last && document.getElementById('t-'+last)) show(last);
+
+  // checkmarks
+  var boxes = all('main input[type=checkbox]');
+  boxes.forEach(function(c,i){
+    c.checked = store.get('c'+i)==='1';
+    c.addEventListener('change',function(){ store.set('c'+i, c.checked?'1':'0') });
+  });
+  document.getElementById('reset').addEventListener('click',function(){
+    boxes.forEach(function(c,i){ c.checked=false; store.del('c'+i) });
+  });
+
+  // saved fields
+  function fillPrint(){
+    all('[data-show]').forEach(function(el){ el.textContent = store.get('f:'+el.dataset.show) || '' });
+  }
+  all('[data-save]').forEach(function(el){
+    var k='f:'+el.dataset.save, v=store.get(k); if(v) el.value=v;
+    el.addEventListener('input',function(){ store.set(k, el.value) });
+  });
+
+  // sign
+  var sign=document.getElementById('sign');
+  all('[data-sign]').forEach(function(b){
+    b.addEventListener('click',function(){
+      sign.className='on '+b.dataset.sign;
+      sign.querySelector('b').textContent = b.dataset.sign==='help'?'HELP':'OK';
+    });
+  });
+  sign.addEventListener('click',function(){ sign.className='' });
+
+  // print
+  document.getElementById('print').addEventListener('click',function(){ fillPrint(); window.print() });
+  window.addEventListener('beforeprint', fillPrint);
+
+  // offline copy
+  var st=document.getElementById('status');
+  function ready(){ st.textContent='✓ Saved on this device. Works with no signal.'; st.className='ok' }
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.register('sw.js').then(function(){
+      return navigator.serviceWorker.ready;
+    }).then(ready).catch(function(){ st.textContent='Not saved for offline use yet. Reload once with internet.' });
+  } else {
+    st.textContent='This browser cannot save the guide for offline use.';
+  }
+})();
+</script>
+</body>
+</html>
