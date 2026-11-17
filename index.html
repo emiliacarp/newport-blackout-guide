@@ -5,80 +5,95 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Newport Beach Blackout Guide</title>
 <meta name="description" content="A neighbor-made guide for Newport Beach that works with no power, no Wi-Fi and no cell signal.">
-<meta name="theme-color" content="#0b1622">
+<meta name="theme-color" content="#f4f0e6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0c0c0b" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Blackout Guide">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" href="icon-180.png">
 <style>
 :root{
-  --bg:#0b1622; --panel:#13212f; --panel2:#1a2c3d; --line:#2a3f54;
-  --text:#eef3f7; --muted:#9db0c2; --amber:#ffb53d; --red:#ff5a4d; --green:#3ecf8e;
-  --radius:14px;
+  --bg:#f4f0e6; --text:#161513; --muted:#5d574c; --hair:#cdc5b3; --field:#fbf9f3;
+  --red:#c22a17; --amber:#8f5b00; --green:#17683a;
+  --head:"Avenir Next Condensed","DIN Condensed","Roboto Condensed","Arial Narrow",sans-serif-condensed,sans-serif;
+  --body:"Avenir Next","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{ --bg:#0c0c0b; --text:#f1ede3; --muted:#a59f92; --hair:#34322d; --field:#161614;
+    --red:#ff6248; --amber:#f0b03c; --green:#4cc27e; }
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--text);
-  font:17px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-  padding:env(safe-area-inset-top) 0 calc(76px + env(safe-area-inset-bottom)) 0}
-header{padding:20px 16px 8px;max-width:720px;margin:0 auto}
-header h1{font-size:26px;line-height:1.15;margin:0 0 4px;letter-spacing:-.01em}
-header p{margin:0;color:var(--muted);font-size:15px}
-#status{display:inline-block;margin-top:10px;padding:4px 10px;border-radius:99px;font-size:13px;
-  background:var(--panel2);color:var(--muted);border:1px solid var(--line)}
-#status.ok{color:var(--green);border-color:#1f6b4c}
-main{max-width:720px;margin:0 auto;padding:0 16px}
+body{margin:0;background:var(--bg);color:var(--text);font:17px/1.5 var(--body);
+  padding:env(safe-area-inset-top) 0 calc(64px + env(safe-area-inset-bottom)) 0}
+header{max-width:680px;margin:0 auto;padding:18px 18px 0}
+header .eyebrow{font:700 14px/1 var(--head);letter-spacing:.16em;text-transform:uppercase;margin:0 0 6px;color:var(--text)}
+header h1{font:800 54px/.92 var(--head);letter-spacing:-.005em;text-transform:uppercase;margin:0 0 10px}
+header p{margin:0;font-size:16px;color:var(--text)}
+#status{display:block;margin-top:10px;padding:8px 0 10px;font-size:13px;color:var(--muted);
+  border-top:1px solid var(--hair);border-bottom:4px solid var(--text)}
+#status.ok{color:var(--green)}
+main{max-width:680px;margin:0 auto;padding:0 18px}
 section{display:none}
 section.on{display:block}
-h2{font-size:21px;margin:22px 0 10px}
-h3{font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--amber);margin:0 0 8px}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px 14px 6px;margin:0 0 14px}
+h2{font:800 30px/1.02 var(--head);text-transform:uppercase;margin:22px 0 4px}
+h3{font:700 17px/1.1 var(--head);letter-spacing:.09em;text-transform:uppercase;margin:0 0 6px}
+.card{border-top:2px solid var(--text);padding:10px 0 4px;margin:18px 0 0}
+h2 + .card{margin-top:12px}
 .card p{margin:0 0 10px}
-.card.alert{border-color:#7a2d27;background:#231a1c}
-.card.alert h3{color:var(--red)}
+.card.alert{border:3px solid var(--red);padding:12px 14px 4px}
+.card.alert h3{color:var(--red);font-size:20px}
 ul.check{list-style:none;margin:0;padding:0}
-ul.check li{border-top:1px solid var(--line)}
+ul.check li{border-top:1px solid var(--hair)}
 ul.check li:first-child{border-top:0}
 ul.check label{display:flex;gap:12px;padding:11px 0;align-items:flex-start;cursor:pointer}
-ul.check input{flex:0 0 24px;width:24px;height:24px;margin:1px 0 0;accent-color:var(--amber)}
+ul.check input{-webkit-appearance:none;appearance:none;flex:0 0 24px;width:24px;height:24px;margin:1px 0 0;
+  border:2px solid var(--text);border-radius:0;background:transparent;position:relative;cursor:pointer}
+ul.check input:checked{background:var(--text)}
+ul.check input:checked::after{content:"";position:absolute;left:6px;top:1px;width:6px;height:13px;
+  border:solid var(--bg);border-width:0 3px 3px 0;transform:rotate(45deg)}
 ul.check input:checked + span{color:var(--muted);text-decoration:line-through}
-ul.plain{margin:0 0 10px;padding-left:20px}
-ul.plain li{margin:0 0 6px}
-.big{font-size:34px;font-weight:700;line-height:1.1;color:var(--amber);margin:0 0 4px}
+ul.plain{margin:0 0 10px;padding-left:19px}
+ul.plain li{margin:0 0 7px}
+.big{font:800 76px/.9 var(--head);letter-spacing:-.01em;margin:4px 0 8px}
 .muted{color:var(--muted);font-size:15px}
-a{color:var(--amber)}
+a{color:inherit;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
 .rows{margin:0 0 8px}
-.row{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-top:1px solid var(--line);align-items:baseline}
+.row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid var(--hair);align-items:baseline}
 .row:first-child{border-top:0}
 .row b{font-weight:600}
-.row a,.row span.v{white-space:nowrap;font-weight:600;text-align:right}
+.row a,.row span.v{white-space:nowrap;font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
 .row small{display:block;color:var(--muted);font-weight:400;font-size:14px}
 .btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 12px}
-button{font:inherit;font-weight:700;border:0;border-radius:12px;padding:16px 10px;color:#0b1622;background:var(--amber);cursor:pointer}
-button.help{background:var(--red);color:#fff}
-button.ok{background:var(--green)}
-button.ghost{background:var(--panel2);color:var(--text);border:1px solid var(--line);font-weight:600}
-label.f{display:block;margin:0 0 12px;font-size:14px;color:var(--muted)}
-label.f input,label.f textarea{display:block;width:100%;margin-top:4px;font:inherit;font-size:17px;color:var(--text);
-  background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:11px 12px}
+button{font:700 18px/1.1 var(--head);letter-spacing:.08em;text-transform:uppercase;border:2px solid var(--text);border-radius:0;
+  padding:16px 10px;color:var(--bg);background:var(--text);cursor:pointer;-webkit-appearance:none;appearance:none}
+button.help{background:#c22a17;border-color:#c22a17;color:#fff}
+button.ok{background:#17683a;border-color:#17683a;color:#fff}
+button.ghost{background:transparent;color:var(--text)}
+label.f{display:block;margin:0 0 14px;font-size:14px;color:var(--muted)}
+label.f input,label.f textarea{display:block;width:100%;margin-top:3px;font:inherit;font-size:17px;color:var(--text);
+  background:var(--field);border:0;border-bottom:2px solid var(--text);border-radius:0;padding:9px 8px;-webkit-appearance:none;appearance:none}
+label.f input::placeholder,label.f textarea::placeholder{color:var(--muted);opacity:.75}
 label.f textarea{min-height:76px;resize:vertical}
-nav{position:fixed;left:0;right:0;bottom:0;background:#0d1a27;border-top:1px solid var(--line);
-  padding:6px 6px calc(6px + env(safe-area-inset-bottom));display:flex;justify-content:center;gap:2px;z-index:5}
-nav button{flex:1 1 0;min-width:0;max-width:140px;background:none;color:var(--muted);font-size:11.5px;font-weight:600;padding:8px 0;border-radius:10px;white-space:nowrap}
-@media (min-width:430px){ nav button{font-size:13px} }
-nav button i{display:block;font-style:normal;font-size:21px;line-height:1.2}
-nav button.on{color:var(--amber);background:var(--panel2)}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--bg);border-top:3px solid var(--text);
+  padding:0 0 env(safe-area-inset-bottom);display:flex;justify-content:center;z-index:5}
+nav button{flex:1 1 auto;min-width:0;max-width:130px;background:none;border:0;border-left:1px solid var(--hair);color:var(--text);
+  font:700 12px/1 var(--head);letter-spacing:.02em;padding:20px 5px 18px;white-space:nowrap}
+nav button:first-child{border-left:0}
+nav button.on{background:var(--text);color:var(--bg)}
+@media (min-width:430px){ nav button{font-size:15px;letter-spacing:.05em} }
 #sign{position:fixed;inset:0;z-index:20;display:none;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:20px}
 #sign.on{display:flex}
-#sign b{font-size:30vw;line-height:1;font-weight:800;letter-spacing:-.02em}
-#sign p{font-size:18px;margin:16px 0 0;opacity:.85}
-#sign.help{background:#d92b1e;color:#fff}
-#sign.ok{background:#17a765;color:#fff}
-footer{max-width:720px;margin:10px auto 0;padding:0 16px 16px;color:var(--muted);font-size:13px}
+#sign b{font:800 38vw/1 var(--head);letter-spacing:-.01em}
+#sign p{font-size:18px;margin:16px 0 0;opacity:.9}
+#sign.help{background:#c22a17;color:#fff}
+#sign.ok{background:#17683a;color:#fff}
+footer{max-width:680px;margin:22px auto 0;padding:10px 18px 16px;color:var(--muted);font-size:13px}
+footer span{display:block;border-top:1px solid var(--hair);padding-top:10px}
 #printcard{display:none}
-@media (min-width:600px){ .btns{grid-template-columns:1fr 1fr 1fr 1fr} }
+@media (min-width:600px){ .btns{grid-template-columns:1fr 1fr 1fr 1fr} header h1{font-size:72px} }
 
 @media print{
   body{background:#fff;color:#000;padding:0;font-size:11pt;line-height:1.35}
@@ -100,7 +115,8 @@ footer{max-width:720px;margin:10px auto 0;padding:0 16px 16px;color:var(--muted)
 <body>
 
 <header>
-  <h1>Newport Beach Blackout Guide</h1>
+  <p class="eyebrow">Newport Beach, California</p>
+  <h1>Blackout Guide</h1>
   <p>What to do when the power, Wi-Fi and phones are down.</p>
   <span id="status">Checking offline copy…</span>
 </header>
@@ -156,7 +172,7 @@ footer{max-width:720px;margin:10px auto 0;padding:0 16px 16px;color:var(--muted)
       <li><label><input type="checkbox"><span>Check your OK neighbors again. Things change after day two.</span></label></li>
     </ul>
   </div>
-  <p class="muted"><button class="ghost" id="reset" style="padding:10px 14px;font-size:14px">Clear all checkmarks</button></p>
+  <p class="muted"><button class="ghost" id="reset" style="padding:10px 14px;font-size:15px">Clear all checkmarks</button></p>
 </section>
 
 <!-- ================= NEWS ================= -->
@@ -439,15 +455,15 @@ footer{max-width:720px;margin:10px auto 0;padding:0 16px 16px;color:var(--muted)
 
 </main>
 
-<footer>Unofficial neighbor-made guide · Facts checked Nov 17, 2026</footer>
+<footer><span>Unofficial neighbor-made guide · Facts checked Nov 17, 2026</span></footer>
 
 <nav>
-  <button data-tab="now" class="on"><i>⚡</i>Now</button>
-  <button data-tab="news"><i>📻</i>News</button>
-  <button data-tab="neighbors"><i>🏘️</i>Neighbors</button>
-  <button data-tab="sat"><i>🛰️</i>Satellite</button>
-  <button data-tab="places"><i>📍</i>Places</button>
-  <button data-tab="plan"><i>📝</i>Plan</button>
+  <button data-tab="now" class="on">Now</button>
+  <button data-tab="news">News</button>
+  <button data-tab="neighbors">Neighbors</button>
+  <button data-tab="sat">Satellite</button>
+  <button data-tab="places">Places</button>
+  <button data-tab="plan">Plan</button>
 </nav>
 
 <div id="sign"><b></b><p>Tap anywhere to close. Turn brightness up and prop the phone in a front window.</p></div>
@@ -564,7 +580,7 @@ footer{max-width:720px;margin:10px auto 0;padding:0 16px 16px;color:var(--muted)
 
   // offline copy
   var st=document.getElementById('status');
-  function ready(){ st.textContent='✓ Saved on this device. Works with no signal.'; st.className='ok' }
+  function ready(){ st.textContent='Saved on this phone. Opens with no signal.'; st.className='ok' }
   if('serviceWorker' in navigator){
     navigator.serviceWorker.register('sw.js').then(function(){
       return navigator.serviceWorker.ready;
